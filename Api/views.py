@@ -24,9 +24,26 @@ from .serializer import Student_serializer
 from .models import Task
 from .serializer import Task_serializer
 
+    
 class Register_view(generics.ListCreateAPIView):
+    serializer_class=Register_serializer
+    permission_classes=[AllowAny]
+    def get_queryset(self):
+        login_user=self.request.user
+
+        if not login_user.is_authenticated:
+            return Register.objects.none()
+
+        if login_user.Role=='admin':
+            return Register.objects.all()
+        else:
+            return Register.objects.filter(id=login_user.id)
+    
+class Register_detail(generics.RetrieveUpdateDestroyAPIView):
     queryset=Register.objects.all()
     serializer_class=Register_serializer
+    authentication_classes=[JWTAuthentication,SessionAuthentication]
+    permission_classes=[IsAuthenticated]
 
 class Search_view(generics.ListCreateAPIView):
     queryset=Search_data.objects.all()
