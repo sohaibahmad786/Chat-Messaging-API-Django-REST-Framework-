@@ -42,4 +42,23 @@ class Task(models.Model):
 
     def __str__(self):
         return self.title
+
+class Booking(models.Model):
+    user=models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE)
+    name=models.CharField()
+    date=models.DateField()
+    time=models.TimeField()
+    is_booked=models.BooleanField(default=True)
+    
+    def __str__(self):
+        return f"{self.name}-{self.date}"
+
+class Message(models.Model):
+    sender=models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE,related_name='sent_message')
+    reciever=models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE,related_name='recieve_messages')
+    text=models.TextField()
+    created_at=models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.sender}\n{self.reciever}"
 # Create your models here.

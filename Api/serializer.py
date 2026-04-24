@@ -5,7 +5,8 @@ from .models import Register
 from .models import Search_data
 from .models import Students
 from .models import Task
-
+from .models import Booking
+from .models import Message
         
 class Register_serializer(serializers.ModelSerializer):
     class Meta:
@@ -30,3 +31,19 @@ class Task_serializer(serializers.ModelSerializer):
     class Meta:
         model=Task
         fields='__all__'
+
+class Booking_serializer(serializers.ModelSerializer):
+    class Meta:
+        model=Booking
+        fields='__all__'
+        extra_kwargs={
+           'user':{'read_only':True}
+        }
+
+class Message_serializer(serializers.ModelSerializer):
+    class Meta:
+        model=Message
+        fields='__all__'
+        extra_kwargs={
+            'sender':{'read_only':True}
+        }
